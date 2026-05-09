@@ -5,16 +5,32 @@ const SetColor = () => {
     const colors = ["red","yellow","green"];
     const [color, setColor] = useState("red");
 
-     return (
+	const nextColor = () => {
+        const currentIndex = colors.indexOf(color);
+        const nextIndex = (currentIndex + 1) % colors.length;
+        setColor(colors[nextIndex]);
+    };
+
+	useEffect(() => {
+		const interval = setInterval (() => {
+			nextColor();
+		}, 3000);
+
+       return () => clearInterval(interval);
+
+    }, [color]);
+
+    return (
 		<div className="d-flex flex-column align-items-center">
-			<div className="bg-dark">
-			    <div className="bg-danger rounded-circle p-3 m-1 border border-5 border-white active"></div>
-			    <div className="bg-warning rounded-circle p-3 m-1"></div>
-			    <div className="bg-success rounded-circle p-3 m-1"></div>
+			<div className="bg-dark" style={{ width: "15px", height: "80px" }}></div>
+			<div className="bg-dark p-2">
+			    <div  onClick={() => setColor("red")} className={`rounded-circle p-4 m-2 bg-danger ${color === "red" ? "resaltar" : ""}`}></div>
+			    <div  onClick={() => setColor("yellow")} className={`rounded-circle p-4 m-2 bg-warning ${color === "yellow" ? "resaltar" : ""}`}></div>
+			    <div  onClick={() => setColor("green")} className={`rounded-circle p-4 m-2 bg-success ${color === "green" ? "resaltar" : ""}`}></div>
             </div>
+			<button className="btn btn-success mt-3" onClick={nextColor}>Change</button>
 		</div>
      );
  };
 
 export default SetColor;
-
